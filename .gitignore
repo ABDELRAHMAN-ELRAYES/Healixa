@@ -1,0 +1,7 @@
+server/.env
+server/node_modules/
+server/package-lock.json
+server/model
+server/src/public/img/predict-users-images
+.prettierrc
+.vscode/
