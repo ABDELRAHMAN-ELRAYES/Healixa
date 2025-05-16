@@ -1,7 +1,7 @@
 server/.env
 server/node_modules/
 server/package-lock.json
-server/model
+server/AI-models
 server/src/public/img/predict-users-images
 .prettierrc
 .vscode/
