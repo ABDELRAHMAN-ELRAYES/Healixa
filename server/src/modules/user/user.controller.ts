@@ -1,5 +1,5 @@
-import catchAsync from '../../../utils/catch-async';
-import UserService from '../services/user.service';
+import catchAsync from '../../utils/catch-async';
+import UserService from './user.service';
 import { Request, Response, NextFunction } from 'express';
 
 /*

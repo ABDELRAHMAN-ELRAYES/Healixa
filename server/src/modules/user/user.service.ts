@@ -1,15 +1,15 @@
-import { IUser } from '../Interfaces/IUser';
-import { generateUserId } from '../../../utils/user-data-handler';
-import { hash } from '../../../utils/hashing-handler';
-import UserRepository from '../repositories/user.repository';
+import { IUser } from './Interfaces/IUser';
+import { generateUserId } from '../../utils/user-data-handler';
+import { hash } from '../../utils/hashing-handler';
+import UserRepository from './user.repository';
 import { NextFunction } from 'express';
-import AppError from '../../../utils/app-error';
+import AppError from '../../utils/app-error';
 
 const userRepository = new UserRepository();
 
 class UserService {
   /*
-   * Create User Service
+   * Create User
    */
   static async saveUser(userData: any) {
     const userType = userData.type;
@@ -23,12 +23,12 @@ class UserService {
     return userRepository.addUser(data);
   }
   /*
-   * Update User Service
+   * Update User
    */
   static async updateUser(updatedData: any, next: NextFunction) {
     const { userId, ...newData } = updatedData;
     const user = await this.getUser(userId, next);
-    if(!user) return;
+    if (!user) return;
     const userData: IUser = {
       ...user,
       ...newData,
@@ -36,31 +36,46 @@ class UserService {
     return userRepository.updateUser(userData);
   }
   /*
-   * Delete User Service
+   * Delete User
    */
   static async deleteUser(userId: string, next: NextFunction) {
     const user = await this.getUser(userId, next);
-    if(!user) return;
+    if (!user) return;
     return userRepository.deleteUser(userId);
   }
   /*
-   * Get all users Service
+   * Get all users
    */
   static async getAllUsers() {
     return userRepository.getAllUsers();
   }
   /*
-   * Get user Service
+   * Get user by ID
    */
   static async getUser(userId: string, next: NextFunction) {
     const user = await userRepository.getUser(userId);
     if (!user) {
-       next(
+      next(
         new AppError(
           404,
           `User with ID : ${userId} is not found, use a valid ID and try again!`
         )
-        
+      );
+      return;
+    }
+    return user;
+  }
+  /*
+   * Get user by email or username
+   */
+  static async getUserByUsernameOrEmail(usernameOrEmail: string, next: NextFunction) {
+    const user = await userRepository.getUserByUsernameOrEmail(usernameOrEmail);
+    if (!user) {
+      next(
+        new AppError(
+          401,
+          `User with provided : ${usernameOrEmail} or Password is not correct, Try again!`
+        )
       );
       return;
     }

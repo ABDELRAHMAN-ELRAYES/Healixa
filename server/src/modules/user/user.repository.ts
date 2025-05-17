@@ -1,6 +1,6 @@
-import Prisma from '../../../prisma-client/prisma-client';
+import Prisma from '../../prisma-client/prisma-client';
 import { PrismaClient } from '@prisma/client';
-import { IUser } from '../Interfaces/IUser';
+import { IUser } from './Interfaces/IUser';
 
 class UserRepository {
   private prisma: PrismaClient;
@@ -24,6 +24,15 @@ class UserRepository {
   }
   deleteUser(userId: string) {
     return this.prisma.user.delete({ where: { id: userId } });
+  }
+
+  getUserByUsernameOrEmail(usernameOrEmail: string) {
+    // TODO : username must be added after enable it in user model
+    return this.prisma.user.findFirst({
+      where: {
+        email: { contains: usernameOrEmail },
+      },
+    });
   }
 }
 export default UserRepository;

@@ -26,11 +26,12 @@ export const globalErrorHandler = (
   next: NextFunction
 ) => {
   const { statusCode } = error;
+  
   const responseObject =
     config.env === 'development'
       ? getDevelopmentErrorMessage(error)
       : getProductionErrorMessage(error);
-  response.status(statusCode).json(responseObject);
+  response.status(statusCode || 500).json(responseObject);
 };
 
 // Handle not found routes
