@@ -13,7 +13,7 @@
   "license": "ISC",
   "author": "Abdelrahman Elrayes",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
     "start": "NODE_ENV=production tsx --env-file=.env ./src/server.ts",
     "start:dev": "tsx watch --env-file=.env src/server.ts"
@@ -31,6 +31,7 @@
   "dependencies": {
     "@prisma/client": "^6.8.1",
     "bcrypt": "^6.0.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "path-to-regexp": "^8.2.0"
   }
 }

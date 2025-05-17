@@ -13,7 +13,7 @@ export const saveUser = catchAsync(
       password: request.body.password,
     };
     const user = await UserService.saveUser(userData);
-    response.json({ status: 'success', data: { user } });
+    response.status(201).json({ status: 'success', data: { user } });
   }
 );
 /*
@@ -24,8 +24,9 @@ export const updateUser = catchAsync(
     const updatedData = request.body.newData;
     const userId = request.params.id;
     updatedData.userId = userId;
-    const user = await UserService.updateUser(updatedData);
-    response.json({ status: 'success', data: { user } });
+    const user = await UserService.updateUser(updatedData, next);
+    if (!user) return;
+    response.status(200).json({ status: 'success', data: { user } });
   }
 );
 /*
@@ -34,8 +35,9 @@ export const updateUser = catchAsync(
 export const deleteUser = catchAsync(
   async (request: Request, response: Response, next: NextFunction) => {
     const userId = request.params.id;
-    const user = await UserService.deleteUser(userId);
-    response.json({ status: 'success', data: { user } });
+    const user = await UserService.deleteUser(userId, next);
+    if (!user) return;
+    response.status(204).json({ status: 'success', data: { user } });
   }
 );
 /*
@@ -44,7 +46,9 @@ export const deleteUser = catchAsync(
 export const getAllUsers = catchAsync(
   async (request: Request, response: Response, next: NextFunction) => {
     const users = await UserService.getAllUsers();
-    response.json({ status: 'success', data: { length: users.length, users } });
+    response
+      .status(200)
+      .json({ status: 'success', data: { length: users.length, users } });
   }
 );
 /*
@@ -53,7 +57,8 @@ export const getAllUsers = catchAsync(
 export const getUser = catchAsync(
   async (request: Request, response: Response, next: NextFunction) => {
     const userId = request.params.id;
-    const user = await UserService.getUser(userId);
-    response.json({ status: 'success', data: { user } });
+    const user = await UserService.getUser(userId, next);
+    if (!user) return;
+    response.status(200).json({ status: 'success', data: { user } });
   }
 );
